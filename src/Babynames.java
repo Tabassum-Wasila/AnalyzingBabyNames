@@ -61,5 +61,55 @@ public class Babynames {
 		int rank = getRank(parser, name, gender);
 		return getName(year, rank, gender);
 	}
+	private int findYear(String fName)
+	{
+		return Integer.parseInt(fName.substring(3, 7));
+	}
+	public int yearOfHighestRank(String name, String gender)
+	{
+		DirectoryResource dr = new DirectoryResource();
+		int highestSoFar = -1;
+		int yearOfRank = -1;
+		
+		for(File file : dr.selectedFiles())
+		{
+			String fName = file.getName();
+			int year = findYear(fName);
+			CSVParser parser = parserFactory(year);
+			int rank = getRank(parser, name, gender);
+			
+			if(rank == -1)
+				continue;
+			if(highestSoFar == -1 || highestSoFar > rank)
+			{	
+				highestSoFar = rank;
+				yearOfRank = year;
+			}
+			
+		}
+		return yearOfRank;
+	}
+	double getAverageRank(String name, String gender)
+	{
+		DirectoryResource dr = new DirectoryResource();
+		double average = 0.0;
+		int rankCount = 0;
+		
+		for(File file : dr.selectedFiles())
+		{
+			String fName = file.getName();
+			int year = findYear(fName);
+			CSVParser parser = parserFactory(year);
+			int rank = getRank(parser, name, gender);
+			if(rank != -1)
+			{	
+				average += rank;
+				rankCount++;
+			}
+		}
+		if(average != 0.0)
+			return average/(double)rankCount;
+		return -1.0d;
+	}
 	
 }
