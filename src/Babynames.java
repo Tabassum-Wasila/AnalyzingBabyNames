@@ -55,4 +55,11 @@ public class Babynames {
 		}
 		return "NO NAME";
 	}
+	public String whatIsNameInYear(String name, int year, int newYear, String gender)
+	{
+		CSVParser parser = parserFactory(year);
+		int rank = getRank(parser, name, gender);
+		return getName(year, rank, gender);
+	}
+	
 }
