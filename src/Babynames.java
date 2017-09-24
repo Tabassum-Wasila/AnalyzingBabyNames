@@ -41,4 +41,18 @@ public class Babynames {
 		}
 		return -1;
 	}
+	public String getName(int year, int rank, String gender)
+	{
+		int rnk = 0;
+		CSVParser parser = parserFactory(year);
+		for(CSVRecord rec : parser)
+		{
+			if(!rec.get(1).equals(gender))
+				continue;
+			rnk++;
+			if(rnk == rank)
+				return rec.get(0);
+		}
+		return "NO NAME";
+	}
 }
